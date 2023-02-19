@@ -13,7 +13,7 @@ producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=
 
 print('Created Producer\n')
 
-file0 = 'TCP_Attack.pcap'
+file0 = './pcaps/TCP_Attack.pcap'
 #load pcap files and extract headers fields 
 packets = myscap.scapy_read_packets(file0)
 
