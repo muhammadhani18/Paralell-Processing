@@ -26,6 +26,7 @@ count = 1
 
 #iterates through each packet, takes only IP packets ( ethertype decimal 2048 corresponds to 0x0800 ) and extracts the 5-tuple ( Source IP address, Dest IP address, Protocol- 17 if UDP or 6 if TCP , Source Port, Destination Port). Then it packs this 5-tuple data in to a message along with the count of the packet and sends it to Kafka using send() method of KafkaProducer.
 
+overlap = ""
 
 for i in range (len(datalst)):
     pkt = datalst[i]
@@ -43,18 +44,16 @@ for i in range (len(datalst)):
             dport = pkt['tdport']
     msg = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport)
 
+    if overlap != "":
+        print(overlap)
     
+    overlap = msg     
     print(msg)
     count+=1         
-
+    
 
 #pkttest_pcap is the topic the producer chooses to append the message in Kafka
     producer.send('pkttest_pcap',msg)
-    sleep(1)
-
-
-
-
-
+    # sleep(0.5)
 
 
