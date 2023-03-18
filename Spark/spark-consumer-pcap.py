@@ -23,10 +23,7 @@ pkt_df2 = pkt_df1.select(from_csv(col("value"),pkt_schema_string).alias("pkt"), 
 
 pkt_df3 = pkt_df2.select("pkt.*", "timestamp")
 
-#summary = pkt_df3.groupBy("proto").count()
-#query = summary
-
-query = pkt_df3.writeStream.trigger(processingTime='5 seconds').outputMode("update").format("console").start()
+query = pkt_df3.writeStream.trigger(processingTime='2 seconds').outputMode("update").format("console").start()
 
 query.awaitTermination()
 
