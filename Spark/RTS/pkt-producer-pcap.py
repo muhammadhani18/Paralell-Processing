@@ -32,33 +32,34 @@ oldtime = time.time()
 
 for i in range (len(datalst)):
     pkt = datalst[i]
-    
-    if(pkt['etype'] == '2048'):
-        isrc = pkt['isrc']
-        idst = pkt['idst']
-        iproto = pkt['iproto']
+    try:
+        if(pkt['etype'] == '2048'):
+            isrc = pkt['isrc']
+            idst = pkt['idst']
+            iproto = pkt['iproto']
+            
+            if iproto == 17:
+                sport = pkt['utsport']
+                dport = pkt['utdport']
+            else:
+                sport = pkt['tsport']
+                dport = pkt['tdport']
+        msg = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport)
+
         
-        if iproto == 17:
-            sport = pkt['utsport']
-            dport = pkt['utdport']
-        else:
-            sport = pkt['tsport']
-            dport = pkt['tdport']
-    msg = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport)
-
-    
-    if time.time() - oldtime > 2: # 2 seconds
-        producer.send('pkttest_pcap',overlap)
-        oldtime = time.time()
+        if time.time() - oldtime >= 2: # 2 seconds
+            producer.send('pkttest_pcap',overlap)
+            oldtime = time.time()
+            
         
-    
-    overlap = msg     
-    print(msg)
-    count+=1         
-    
+        overlap = msg     
+        print(msg)
+        count+=1         
+        
 
-#pkttest_pcap is the topic the producer chooses to append the message in Kafka
-    producer.send('pkttest_pcap',msg)
-    sleep(1)
+    #pkttest_pcap is the topic the producer chooses to append the message in Kafka
+        producer.send('pkttest_pcap',msg)
+        sleep(0.2)
 
-
+    except KeyError:
+        pass
