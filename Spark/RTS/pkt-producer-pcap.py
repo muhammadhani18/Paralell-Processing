@@ -37,20 +37,23 @@ for i in range (len(datalst)):
             isrc = pkt['isrc']
             idst = pkt['idst']
             iproto = pkt['iproto']
-            
+         #   pkt_len = pkt['ulen']
+          #  sport = ''
+           # dport = ''
             if iproto == 17:
                 sport = pkt['utsport']
                 dport = pkt['utdport']
             else:
                 sport = pkt['tsport']
                 dport = pkt['tdport']
-        msg = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport)
+        msg = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport) #+ ',' + str(pkt_len)
+        #msg2 = str(count) + ',' + str(isrc) + ',' + str(idst) + ',' + str(iproto) + ',' + str(sport) + ',' + str(dport) + ',' + str(pkt_len)
 
-        
+    
         if time.time() - oldtime >= 2: # 2 seconds
             producer.send('pkttest_pcap',overlap)
             oldtime = time.time()
-            
+       
         
         overlap = msg     
         print(msg)
@@ -58,8 +61,9 @@ for i in range (len(datalst)):
         
 
     #pkttest_pcap is the topic the producer chooses to append the message in Kafka
-        producer.send('pkttest_pcap',msg)
-        sleep(0.2)
+        #producer.send('pkttest_pcap',msg)
+        producer.send('pkttest_pcap',msg2)
+        sleep(0.5)
 
     except KeyError:
         pass
