@@ -3,7 +3,7 @@ from pyspark.sql.functions import *
 from pymongo import MongoClient
 
 # MongoDB connection details
-mongo_uri = "mongodb+srv://mhani:Deviljin1@batchdata.niq660y.mongodb.net/?retryWrites=true&w=majority"
+mongo_uri = "mongodb+srv://<username>:<password>@batchdata.niq660y.mongodb.net/?retryWrites=true&w=majority"
 mongo_db = "spark"
 mongo_collection = "Spark"
 
@@ -43,3 +43,5 @@ df.writeStream \
     ) \
     .start() \
     .awaitTermination()
+
+#spark-submit --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 stream_to_mongodb.py
