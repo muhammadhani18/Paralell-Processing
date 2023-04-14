@@ -17,6 +17,9 @@ import pandas as pd
 streamer = NFStreamer(source='./50_sec_ddos.pcap')
 
 df = streamer.to_pandas(columns_to_anonymize=[])
-print(df)
+#print(df)
+
+for i in range(len(df)):
+    print(df.iloc[i:])
 
 df.to_csv('./ddos.csv')

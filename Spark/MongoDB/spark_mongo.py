@@ -44,4 +44,4 @@ df.writeStream \
     .start() \
     .awaitTermination()
 
-#spark-submit --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 stream_to_mongodb.py
+#spark-submit --packages org.mongodb.spark:mongo-spark-connector_3.0:3.1.1 stream_to_mongodb.py

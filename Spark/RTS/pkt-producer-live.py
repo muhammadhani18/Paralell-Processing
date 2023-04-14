@@ -2,6 +2,11 @@ from time import sleep
 from struct import *
 from kafka import KafkaProducer
 import pcapy
+import nfstream
+from nfstream import *
+import csv
+import pandas as pd 
+
 
 
 #create the kafka producer which connects to kafka server at port 9092
