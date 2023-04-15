@@ -11,11 +11,16 @@ kafka_bootstrap_servers = 'localhost:9092'
 spark = SparkSession.builder.appName("Structured Streaming Pkt").master("local[*]").getOrCreate()
 
 spark.sparkContext.setLogLevel("Error")
+
 pkt_df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", kafka_bootstrap_servers).option("subscribe", kafka_topic_name).load()
+
 pkt_df1 = pkt_df.selectExpr("CAST(value as String)", "timestamp")
-sparkDF=spark.createDataFrame(pkt_df1) 
-sparkDF.printSchema()
-sparkDF.show()
+
+#sparkDF=spark.createDataFrame(pkt_df)
+
+#sparkDF.printSchema()
+
+#sparkDF.show()
 
 #construt a streaming dataframe that reads from topic
 
@@ -26,8 +31,6 @@ sparkDF.show()
 
 # pkt_df3 = pkt_df2.select("pkt.*", "timestamp")
 
-# query = pkt_df3.writeStream.trigger(processingTime='2 seconds').outputMode("update").format("console").start()
+query = pkt_df.writeStream.trigger(processingTime='2 seconds').outputMode("update").format("console").start()
 
-# query.awaitTermination()
-
-
+query.awaitTermination()
