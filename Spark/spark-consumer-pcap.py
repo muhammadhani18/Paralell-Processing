@@ -16,6 +16,15 @@ pkt_df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", kafk
 
 pkt_df1 = pkt_df.selectExpr("CAST(value as String)", "timestamp")
 
+query = pkt_df.writeStream.trigger(processingTime='2 seconds').outputMode("update").format("console").start()
+
+query.awaitTermination()
+
+
+
+
+
+
 #sparkDF=spark.createDataFrame(pkt_df)
 
 #sparkDF.printSchema()
@@ -31,6 +40,4 @@ pkt_df1 = pkt_df.selectExpr("CAST(value as String)", "timestamp")
 
 # pkt_df3 = pkt_df2.select("pkt.*", "timestamp")
 
-query = pkt_df.writeStream.trigger(processingTime='2 seconds').outputMode("update").format("console").start()
 
-query.awaitTermination()
